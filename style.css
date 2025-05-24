@@ -1,0 +1,21 @@
+
+    body {
+      background-color: #222;
+      color: white;
+    }
+    #gameCanvas {
+      background-color: #000;
+      display: block;
+      margin: 0 auto;
+      border: 2px solid white;
+    }
+    .hidden {
+      display: none;
+    }
+    .center {
+      text-align: center;
+    }
+    .game-info {
+      margin-bottom: 20px;
+    }
+ 
