@@ -20,6 +20,11 @@
       flex-direction: column;
     }
     
+    /* Hide elements with class "hidden" */
+    .hidden {
+      display: none;
+    }
+    
     /* Main content container to centralize the game vertically */
     .content-wrapper {
       flex: 1;
@@ -27,6 +32,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      width: 100%;
     }
     
     .container {
@@ -57,9 +63,14 @@
       width: 100%;
     }
 
-    /* Override Bootstrap's container margin if necessary */
     .mt-4 {
       margin-top: 1.5rem !important;
+    }
+    
+    /* Limit label width so it never exceeds 400px */
+    label[for="playerName"] {
+      max-width: 400px;
+      display: inline-block;
     }
   </style>
 </head>
@@ -70,7 +81,7 @@
       <div id="homeScreen" class="center">
         <h1>Pong Single Player</h1>
         <div class="form-group">
-          <label for="playerName" style="max-width:400px; display:inline-block;">Enter your name:</label>
+          <label for="playerName">Enter your name:</label>
           <input type="text" id="playerName" class="form-control" placeholder="Name">
         </div>
         <div class="mb-3">
@@ -81,10 +92,10 @@
         </div>
       </div>
 
-      <!-- Game Canvas -->
+      <!-- Game Canvas (initially hidden) -->
       <canvas id="gameCanvas" class="hidden"></canvas>
 
-      <!-- Game Info -->
+      <!-- Game Info (initially hidden) -->
       <div id="gameInfo" class="center game-info hidden">
         <h4>Stage: <span id="stageDisplay">1</span></h4>
       </div>
