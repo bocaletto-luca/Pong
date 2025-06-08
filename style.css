@@ -1,23 +1,57 @@
-
-    body {
-      background-color: #222;
-      color: white;
-    }
-    #gameCanvas {
-  background-color: #000;
-  display: block;
-  margin: 0 auto;
-  border: 2px solid white;
-  width: 98%;  /* Questa regola aiuta a definire la larghezza visuale */
-  height: auto; /* Lascia che l'altezza si adatti, se non hai un rapporto fisso */
+* {
+  box-sizing: border-box;
 }
-    .hidden {
-      display: none;
-    }
-    .center {
-      text-align: center;
-    }
-    .game-info {
-      margin-bottom: 20px;
-    }
- 
+
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: #222;
+  color: white;
+}
+
+.main-container {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Contenitore per il canvas con rapporto di aspetto (es. 4:3 → padding-bottom: 75%) */
+.canvas-container {
+  position: relative;
+  width: 98%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.canvas-container::before {
+  content: "";
+  display: block;
+  padding-bottom: 75%;  /* Modifica questo valore per il rapporto desiderato */
+}
+
+#gameCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  border: 2px solid white;
+}
+
+/* Altri stili */
+.hidden {
+  display: none;
+}
+
+.center {
+  text-align: center;
+}
+
+.game-info {
+  margin-bottom: 20px;
+}
