@@ -21,10 +21,10 @@ body, html {
 
 label[for="playerName"] {
   max-width: 400px;
-  display: inline-block; /* o block, dipende dal layout */
+  display: inline-block; /* Change to block if needed */
 }
 
-/* Contenitore per il canvas con rapporto di aspetto (es. 4:3 → padding-bottom: 75%) */
+/* Container for the canvas with fixed aspect ratio (e.g., 4:3 → padding-bottom: 75%) */
 .canvas-container {
   position: relative;
   width: 98%;
@@ -35,7 +35,7 @@ label[for="playerName"] {
 .canvas-container::before {
   content: "";
   display: block;
-  padding-bottom: 75%;  /* Modifica questo valore per il rapporto desiderato */
+  padding-bottom: 75%;  /* Change this value to adjust the desired aspect ratio */
 }
 
 #gameCanvas {
@@ -48,7 +48,7 @@ label[for="playerName"] {
   border: 2px solid white;
 }
 
-/* Altri stili */
+/* Other styles */
 .hidden {
   display: none;
 }
@@ -59,4 +59,12 @@ label[for="playerName"] {
 
 .game-info {
   margin-bottom: 20px;
+}
+
+/* Footer styling (optional) */
+footer {
+  text-align: center;
+  padding: 10px 0;
+  background-color: #111;
+  width: 100%;
 }
