@@ -1,10 +1,10 @@
 "use strict";
 
-// Dimensioni di riferimento del gioco (base game coordinate system)
+// Dimensioni di riferimento del gioco (sistema di coordinate BASE)
 const BASE_WIDTH = 800;
-const BASE_HEIGHT = 500;
+const BASE_HEIGHT = 500;  // Altezza base modificata a 500px
 
-// Valori di base per oggetti di gioco
+// Valori di base per gli oggetti di gioco
 const baseBall = {
   radius: 8,
   speedX: 4,
@@ -23,7 +23,7 @@ const baseBot = {
   speed: 4
 };
 
-// Variabile globale per la scala corrente (che trasforma il sistema di riferimento BASE in quello visualizzato)
+// Variabile globale per la scala corrente (per il ridimensionamento)
 let scale = 1;
 
 // Recupero degli elementi dal DOM
@@ -43,10 +43,10 @@ let playerNameInput = document.getElementById("playerName");
 let gameRunning = false;
 let playerName = "";
 let stage = 1;
-let ballSpeedIncrement = 0.5; // Incremento della velocità della pallina per stage
+let ballSpeedIncrement = 0.5; // Incremento della velocità della pallina per ogni stage
 
-// Oggetti di gioco (le coordinate e dimensioni sono basate sul sistema BASE)
-// Il ridimensionamento del canvas tramite transform farà sì che il sistema di riferimento rimanga invariato
+// Oggetti di gioco (sistema di coordinate BASE)
+// La logica del gioco è basata su queste coordinate; il ridimensionamento tramite ctx.scale() mantiene il sistema inalterato
 let ball = {
   x: BASE_WIDTH / 2,
   y: BASE_HEIGHT / 2,
@@ -78,32 +78,30 @@ function resizeCanvas() {
   const container = document.querySelector(".container");
   const dpr = window.devicePixelRatio || 1;
 
-  // Calcola la larghezza visuale impostando il 98% della larghezza del container
+  // Calcola la larghezza disponibile (98% del container) e l'altezza disponibile (qui usiamo la viewport o valore fisso)
   let availWidth = container.clientWidth * 0.98;
-  // Calcola l'altezza disponibile in base alla finestra (80% dell'altezza della viewport, ad esempio)
   let availHeight = window.innerHeight * 0.8;
 
-  // Determina il fattore di scala usando le dimensioni BASE come riferimento,
-  // mantenendo inalterato il rapporto d'aspetto
+  // Determina il fattore di scala usando il sistema BASE come riferimento
   scale = Math.min(availWidth / BASE_WIDTH, availHeight / BASE_HEIGHT);
 
   // Dimensioni visuali effettive del canvas (in CSS)
   let visualWidth = BASE_WIDTH * scale;
   let visualHeight = BASE_HEIGHT * scale;
 
-  // Applica le dimensioni in CSS
+  // Applica le dimensioni via CSS
   canvas.style.width = visualWidth + "px";
   canvas.style.height = visualHeight + "px";
 
-  // Imposta la dimensione interna del canvas in base al devicePixelRatio
+  // Imposta le dimensioni interne del canvas in base alla densità dei pixel
   canvas.width = visualWidth * dpr;
   canvas.height = visualHeight * dpr;
 
-  // Resetta la trasformazione e applica una scala che combina dpr e scale
+  // Resetta la trasformazione e applica una scala combinata di dpr e scale
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.scale(dpr * scale, dpr * scale);
 
-  // Reimposta le posizioni e le dimensioni degli oggetti di gioco in coordinate BASE
+  // Riallinea le posizioni e dimensioni degli oggetti di gioco nel sistema BASE
   ball.x = BASE_WIDTH / 2;
   ball.y = BASE_HEIGHT / 2;
   ball.radius = baseBall.radius;
@@ -123,7 +121,7 @@ function resizeCanvas() {
   bot.speed = baseBot.speed;
 }
 
-// Eventi per gestire il ridimensionamento automatico
+// Eventi per il ridimensionamento
 window.addEventListener("resize", resizeCanvas);
 window.addEventListener("load", resizeCanvas);
 
@@ -149,7 +147,7 @@ document.addEventListener("keyup", function (e) {
 // Controllo mouse: sposta la racchetta del giocatore in base alla posizione verticale
 canvas.addEventListener("mousemove", function (e) {
   let rect = canvas.getBoundingClientRect();
-  // Convertiamo la posizione del mouse nelle coordinate BASE
+  // Converti la posizione del mouse nel sistema BASE
   let relativeY = ((e.clientY - rect.top) / parseFloat(canvas.style.height)) * BASE_HEIGHT;
   player.y = relativeY - player.height / 2;
 });
@@ -159,13 +157,12 @@ function updateGamepad() {
   let gamepads = navigator.getGamepads();
   if (gamepads[0]) {
     let gp = gamepads[0];
-    // L'asse verticale del primo stick (asse[1])
     let axisY = gp.axes[1];
     player.y += axisY * player.speed;
   }
 }
 
-// Funzioni di disegno sul canvas (le coordinate sono nel sistema BASE)
+// Funzioni di disegno (coordinate nel sistema BASE)
 function drawRect(x, y, w, h, color) {
   ctx.fillStyle = color;
   ctx.fillRect(x, y, w, h);
@@ -182,7 +179,7 @@ function drawCircle(x, y, r, color) {
 function drawNet() {
   ctx.fillStyle = "white";
   let netWidth = 2,
-    netHeight = 10;
+      netHeight = 10;
   for (let i = 0; i < BASE_HEIGHT; i += 15) {
     drawRect(BASE_WIDTH / 2 - netWidth / 2, i, netWidth, netHeight, "white");
   }
@@ -191,14 +188,10 @@ function drawNet() {
 // Disegna lo stato attuale della partita
 function draw() {
   ctx.clearRect(0, 0, BASE_WIDTH, BASE_HEIGHT);
-  // Sfondo nero
   drawRect(0, 0, BASE_WIDTH, BASE_HEIGHT, "#000");
   drawNet();
-  // Racchetta giocatore
   drawRect(player.x, player.y, player.width, player.height, "white");
-  // Racchetta bot
   drawRect(bot.x, bot.y, bot.width, bot.height, "white");
-  // Pallina
   drawCircle(ball.x, ball.y, ball.radius, "white");
 
   // Visualizza lo stage
@@ -207,7 +200,7 @@ function draw() {
   ctx.fillText("Stage: " + stage, BASE_WIDTH / 4, 30);
 }
 
-// Rilevamento collisione della pallina con una racchetta
+// Verifica collisione della pallina con una racchetta
 function collisionDetect(paddle) {
   return (
     ball.x - ball.radius < paddle.x + paddle.width &&
@@ -217,7 +210,7 @@ function collisionDetect(paddle) {
   );
 }
 
-// Resetta la pallina al centro, impostandone la direzione (in base al vincitore del round)
+// Resetta la pallina al centro impostando la direzione corretta
 function resetBall(direction) {
   ball.x = BASE_WIDTH / 2;
   ball.y = BASE_HEIGHT / 2;
@@ -230,13 +223,13 @@ function resetBall(direction) {
   }
 }
 
-// Funzione principale di update: gestisce la logica del gioco e richiama il rendering
+// Funzione principale di aggiornamento
 function update() {
   if (!gameRunning) return;
 
   updateGamepad();
 
-  // Movimento giocatore
+  // Movimento del giocatore
   if (player.moveUp && player.y > 0) {
     player.y -= player.speed;
   }
@@ -248,7 +241,7 @@ function update() {
   ball.x += ball.speedX;
   ball.y += ball.speedY;
 
-  // Controllo dei rimbalzi verticali
+  // Gestione rimbalzo verticale della pallina
   if (ball.y - ball.radius < 0 || ball.y + ball.radius > BASE_HEIGHT) {
     ball.speedY = -ball.speedY;
   }
@@ -267,33 +260,30 @@ function update() {
     ball.speedY = collidePoint * 0.35;
   }
 
-  // Controllo se la pallina esce dalla finestra: se a sinistra, game over
+  // Se la pallina esce a sinistra: Game Over
   if (ball.x - ball.radius < 0) {
     gameOver();
     return;
   }
 
-  // Se la pallina esce a destra, il giocatore vince il round
+  // Se la pallina esce a destra: il giocatore vince il round
   if (ball.x + ball.radius > BASE_WIDTH) {
     stage++;
     stageDisplay.innerText = stage;
-    // Incrementa la velocità del bot per aumentare la difficoltà
     bot.speed += 0.5;
     resetBall("player");
   }
 
-  // Aggiorna la posizione del bot (funzione delegata in bot.js)
-  // Se la logica del bot non è qui, assicurati che la funzione updateBotAI esista
+  // Sposta il bot in maniera automatica
   if (typeof updateBotAI === "function") {
     updateBotAI(bot, ball, stage);
   } else {
-    // Logica di base per il bot: semplicemente lo fa muovere verso la pallina
+    // Logica di base per il bot
     if (bot.y + bot.height / 2 < ball.y) {
       bot.y += bot.speed;
     } else {
       bot.y -= bot.speed;
     }
-    // Limita il movimento del bot entro i confini
     if (bot.y < 0) bot.y = 0;
     if (bot.y + bot.height > BASE_HEIGHT) bot.y = BASE_HEIGHT - bot.height;
   }
@@ -302,7 +292,7 @@ function update() {
   requestAnimationFrame(update);
 }
 
-// Funzione di Game Over: registra il punteggio e ripristina lo stato iniziale
+// Funzione di Game Over
 function gameOver() {
   gameRunning = false;
   let recordData = JSON.parse(localStorage.getItem("recordData")) || [];
@@ -317,7 +307,7 @@ function gameOver() {
   resetGame();
 }
 
-// Reset della partita e ritorno alla home
+// Reset della partita e ritorno alla schermata iniziale
 function resetGame() {
   stage = 1;
   stageDisplay.innerText = stage;
@@ -334,9 +324,46 @@ function resetGame() {
   homeScreen.style.display = "block";
 }
 
-// Inizio della partita: controlla che il nome sia inserito, nasconde la schermata iniziale e avvia il ciclo di update
+// Funzione per mostrare il countdown prima dell'inizio del gioco
+function startCountdown(callback) {
+  // Crea l'overlay per il countdown
+  let countdownOverlay = document.createElement("div");
+  countdownOverlay.id = "countdownOverlay";
+  countdownOverlay.style.position = "absolute";
+  
+  // Posiziona l'overlay in modo da coprire il canvas
+  let rect = canvas.getBoundingClientRect();
+  countdownOverlay.style.top = rect.top + "px";
+  countdownOverlay.style.left = rect.left + "px";
+  countdownOverlay.style.width = rect.width + "px";
+  countdownOverlay.style.height = rect.height + "px";
+  countdownOverlay.style.display = "flex";
+  countdownOverlay.style.alignItems = "center";
+  countdownOverlay.style.justifyContent = "center";
+  countdownOverlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+  countdownOverlay.style.zIndex = "1000";
+  countdownOverlay.style.fontSize = "48px";
+  countdownOverlay.style.color = "white";
+  countdownOverlay.innerText = "3";
+
+  document.body.appendChild(countdownOverlay);
+
+  let count = 3;
+  let interval = setInterval(function () {
+    count--;
+    if (count > 0) {
+      countdownOverlay.innerText = count;
+    } else {
+      clearInterval(interval);
+      document.body.removeChild(countdownOverlay);
+      callback();
+    }
+  }, 1000);
+}
+
+// Inizio della partita con il countdown
 function startGame() {
-  // Assicuriamoci che il canvas sia dimensionato correttamente
+  // Ridimensiona il canvas per essere sicuri che sia impostato correttamente
   resizeCanvas();
 
   playerName = playerNameInput.value.trim();
@@ -344,14 +371,19 @@ function startGame() {
     alert("Inserisci il tuo nome per iniziare la partita.");
     return;
   }
+
   homeScreen.style.display = "none";
   canvas.classList.remove("hidden");
   gameInfo.classList.remove("hidden");
-  gameRunning = true;
-  stage = 1;
-  stageDisplay.innerText = stage;
-  resetBall("bot");
-  requestAnimationFrame(update);
+
+  // Avvia il countdown; al termine, inizia il gioco
+  startCountdown(function () {
+    gameRunning = true;
+    stage = 1;
+    stageDisplay.innerText = stage;
+    resetBall("bot");
+    requestAnimationFrame(update);
+  });
 }
 
 // Visualizza i record memorizzati
