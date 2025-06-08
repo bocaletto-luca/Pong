@@ -6,36 +6,93 @@
   <title>Pong | Single Player | By Bocaletto Luca</title>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="style.css"> 
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Ensure full height and flex centering for the whole page */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #222;
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Main content container to centralize the game vertically */
+    .content-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .container {
+      max-width: 800px;
+      width: 100%;
+    }
+
+    /* Centered text helper */
+    .center {
+      text-align: center;
+    }
+
+    /* Canvas styling */
+    #gameCanvas {
+      background-color: #000;
+      display: block;
+      margin: 0 auto;
+      border: 2px solid white;
+      width: 98%;
+      height: auto;
+    }
+    
+    /* Footer styling */
+    footer {
+      text-align: center;
+      padding: 10px 0;
+      background-color: #111;
+      width: 100%;
+    }
+
+    /* Override Bootstrap's container margin if necessary */
+    .mt-4 {
+      margin-top: 1.5rem !important;
+    }
+  </style>
 </head>
 <body>
-  <div class="container mt-4">
-    <!-- Home Screen -->
-    <div id="homeScreen" class="center">
-      <h1>Pong Single Player</h1>
-      <div class="form-group">
-        <label for="playerName">Enter your name:</label>
-        <input type="text" id="playerName" class="form-control" placeholder="Name">
+  <div class="content-wrapper">
+    <div class="container mt-4">
+      <!-- Home Screen -->
+      <div id="homeScreen" class="center">
+        <h1>Pong Single Player</h1>
+        <div class="form-group">
+          <label for="playerName" style="max-width:400px; display:inline-block;">Enter your name:</label>
+          <input type="text" id="playerName" class="form-control" placeholder="Name">
+        </div>
+        <div class="mb-3">
+          <button id="startBtn" class="btn btn-success">Start Game</button>
+          <!-- These buttons use Bootstrap modals -->
+          <button id="helpBtn" class="btn btn-info" data-toggle="modal" data-target="#helpModal">Help</button>
+          <button id="recordBtn" class="btn btn-warning">Records</button>
+        </div>
       </div>
-      <div class="mb-3">
-        <button id="startBtn" class="btn btn-success">Start Game</button>
-        <!-- These buttons use Bootstrap modals -->
-        <button id="helpBtn" class="btn btn-info" data-toggle="modal" data-target="#helpModal">Help</button>
-        <button id="recordBtn" class="btn btn-warning">Records</button>
+
+      <!-- Game Canvas -->
+      <canvas id="gameCanvas" class="hidden"></canvas>
+
+      <!-- Game Info -->
+      <div id="gameInfo" class="center game-info hidden">
+        <h4>Stage: <span id="stageDisplay">1</span></h4>
       </div>
-    </div>
-
-    <!-- Game Canvas -->
-    <canvas id="gameCanvas" class="hidden"></canvas>
-
-    <!-- Game Info -->
-    <div id="gameInfo" class="center game-info hidden">
-      <h4>Stage: <span id="stageDisplay">1</span></h4>
     </div>
   </div>
 
   <!-- Footer -->
-  <footer class="text-center mt-4 mb-2">
+  <footer>
     <p>By Bocaletto Luca</p>
   </footer>
 
@@ -52,8 +109,8 @@
         <div class="modal-body">
           <p>Use the keyboard (Up/Down arrow keys or W/S), the mouse, or a gamepad to move your paddle (left) and hit the ball.</p>
           <p>If the ball passes your paddle, the game is over.</p>
-          <p>If the ball passes the bot's paddle, you progress to the next stage and the bot becomes more skilled.</p>
-          <p>The record saves the winner’s name along with the reached stage.</p>
+          <p>If the ball passes the bot’s paddle, you advance to the next stage and the bot becomes more skilled.</p>
+          <p>The record saves the winner’s name and the reached stage.</p>
           <p>Good luck and have fun! 😊</p>
         </div>
         <div class="modal-footer">
