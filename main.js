@@ -2,7 +2,7 @@
 
 // Dimensioni di riferimento del gioco (base game coordinate system)
 const BASE_WIDTH = 800;
-const BASE_HEIGHT = 600;
+const BASE_HEIGHT = 500;
 
 // Valori di base per oggetti di gioco
 const baseBall = {
