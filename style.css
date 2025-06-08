@@ -4,11 +4,13 @@
       color: white;
     }
     #gameCanvas {
-      background-color: #000;
-      display: block;
-      margin: 0 auto;
-      border: 2px solid white;
-    }
+  background-color: #000;
+  display: block;
+  margin: 0 auto;
+  border: 2px solid white;
+  width: 98%;  /* Questa regola aiuta a definire la larghezza visuale */
+  height: auto; /* Lascia che l'altezza si adatti, se non hai un rapporto fisso */
+}
     .hidden {
       display: none;
     }
