@@ -13,40 +13,50 @@ html, body {
   font-family: sans-serif;
 }
 
-/* Use flex layout in the body to have the main content centered and the footer always at the bottom */
+/* Use flex layout in the body to have the main content centered and the footer at the bottom */
 body {
   display: flex;
   flex-direction: column;
 }
 
-/* Main container which will expand to fill available space */
+/* Main container centered vertically and horizontally */
 .main-container {
-  flex: 1;
+  flex: 1; /* Expand to fill available space */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 20px;
+  text-align: center; /* ensures that children are centered */
 }
 
-/* Limit the width of the label for player name */
+/* Container: block-level element, centered horizontally */
+.container {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Limit the width of the player name label */
 label[for="playerName"] {
   max-width: 400px;
   display: inline-block;
 }
 
-/* Canvas container: maintains a fixed aspect ratio using a padding-bottom trick */
+/* Canvas container with fixed aspect ratio using padding-bottom (for a 4:3 ratio) */
 .canvas-container {
   position: relative;
   width: 98%;
   max-width: 800px;
-  margin: 20px auto;  /* Separates the canvas container from other elements */
+  margin: 20px auto;  /* Automatic horizontal margins center this element */
+  text-align: center;
 }
 
 .canvas-container::before {
   content: "";
   display: block;
-  padding-bottom: 75%;  /* For a 4:3 aspect ratio; modify as necessary */
+  padding-bottom: 75%;  /* For a 4:3 aspect ratio; adjust as needed */
 }
 
 #gameCanvas {
@@ -72,7 +82,7 @@ label[for="playerName"] {
   margin-bottom: 20px;
 }
 
-/* Footer styling: always at the bottom and full width */
+/* Footer: always fixed at the bottom */
 footer {
   text-align: center;
   padding: 10px 0;
