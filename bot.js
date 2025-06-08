@@ -1,39 +1,40 @@
-"use strict";
-
 /**
- * updateBotAI: Aggiorna la posizione della racchetta del bot in base alla posizione della pallina e allo stage corrente.
+ * updateBotAI: Updates the bot paddle's position based on the ball's position and the current stage.
  *
- * @param {Object} bot - L'oggetto racchetta del bot, con proprietà x, y, width, height e speed.
- * @param {Object} ball - L'oggetto pallina, con proprietà x, y, radius, speedX e speedY.
- * @param {number} stage - Il livello corrente del gioco, che influenza l'abilità del bot.
+ * @param {Object} bot - The bot paddle object, with properties x, y, width, height, and speed.
+ * @param {Object} ball - The ball object, with properties x, y, radius, speedX, and speedY.
+ * @param {number} stage - The current game level, which influences the bot’s precision.
  */
 function updateBotAI(bot, ball, stage) {
+  // Use BASE_HEIGHT (the game’s base height) for the calculations.
   let targetY;
-
-  // Se la pallina si muove verso il bot, il bot la segue; altrimenti ritorna al centro.
+  
+  // When the ball is moving toward the bot, follow it; otherwise, return to the center.
   if (ball.speedX > 0) {
-    // Imposta il target in modo che il centro della racchetta si allinei con la pallina.
+    // Set the target so that the center of the bot paddle aligns with the ball’s y.
     targetY = ball.y - bot.height / 2;
-    // Calcola un margine d'errore: a stage bassi l'errore è maggiore, a stage alti il bot è più preciso.
-    let maxError = Math.max(30 - stage, 2); // L'errore non scende mai sotto 2.
+    // Calculate an error margin: at lower stages the error is larger; at higher stages the bot is more precise.
+    let maxError = Math.max(30 - stage, 2); // The error will never go below 2.
     let errorOffset = (Math.random() * 2 * maxError) - maxError;
     targetY += errorOffset;
   } else {
-    // Se la pallina si sta allontanando, il bot ritorna verso il centro del canvas.
-    targetY = (canvas.height - bot.height) / 2;
+    // If the ball is moving away, return to the center of the game area.
+    targetY = (BASE_HEIGHT - bot.height) / 2;
   }
   
-  // Muovi la racchetta del bot gradualmente in base alla velocità impostata.
+  // Gradually move the bot paddle toward the target position.
   if (bot.y < targetY) {
     bot.y += bot.speed;
+    if (bot.y > targetY) bot.y = targetY;
   } else if (bot.y > targetY) {
     bot.y -= bot.speed;
+    if (bot.y < targetY) bot.y = targetY;
   }
   
-  // Garantiamo che la racchetta rimanga entro i limiti del canvas.
+  // Clamp the bot paddle within the limits of the game area using BASE_HEIGHT.
   if (bot.y < 0) {
     bot.y = 0;
-  } else if (bot.y + bot.height > canvas.height) {
-    bot.y = canvas.height - bot.height;
+  } else if (bot.y + bot.height > BASE_HEIGHT) {
+    bot.y = BASE_HEIGHT - bot.height;
   }
 }
