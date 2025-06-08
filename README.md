@@ -12,6 +12,10 @@
 
 **Pong Web Game Single Player** is a modern re-imagination of the classic Pong arcade game. In this browser-based version, you play against an AI opponent with adjustable difficulty levels. Enjoy smooth animations, responsive controls, and a nostalgic arcade feel—all built with HTML5, CSS3, and JavaScript.
 
+## Language
+
+English and Italian.
+
 ## Installation
 
 No installation is required. Simply serve the files via an HTTP/HTTPS server (for example, using Apache) and open `index.html` in your browser.
