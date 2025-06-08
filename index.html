@@ -6,109 +6,44 @@
   <title>Pong | Single Player | By Bocaletto Luca</title>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Custom Style -->
   <link rel="stylesheet" href="style.css">
-  <style>
-    /* Ensure full height and flex centering for the whole page */
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background-color: #222;
-      color: white;
-      font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    /* Hide elements with class "hidden" */
-    .hidden {
-      display: none;
-    }
-    
-    /* Main content container to centralize the game vertically */
-    .content-wrapper {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-    }
-    
-    .container {
-      max-width: 800px;
-      width: 100%;
-    }
-
-    /* Centered text helper */
-    .center {
-      text-align: center;
-    }
-
-    /* Canvas styling */
-    #gameCanvas {
-      background-color: #000;
-      display: block;
-      margin: 0 auto;
-      border: 2px solid white;
-      width: 98%;
-      height: auto;
-    }
-    
-    /* Footer styling */
-    footer {
-      text-align: center;
-      padding: 10px 0;
-      background-color: #111;
-      width: 100%;
-    }
-
-    .mt-4 {
-      margin-top: 1.5rem !important;
-    }
-    
-    /* Limit label width so it never exceeds 400px */
-    label[for="playerName"] {
-      max-width: 400px;
-      display: inline-block;
-    }
-  </style>
 </head>
 <body>
-  <div class="content-wrapper">
-    <div class="container mt-4">
-      <!-- Home Screen -->
-      <div id="homeScreen" class="center">
-        <h1>Pong Single Player</h1>
-        <div class="form-group">
-          <label for="playerName">Enter your name:</label>
-          <input type="text" id="playerName" class="form-control" placeholder="Name">
-        </div>
-        <div class="mb-3">
-          <button id="startBtn" class="btn btn-success">Start Game</button>
-          <!-- These buttons use Bootstrap modals -->
-          <button id="helpBtn" class="btn btn-info" data-toggle="modal" data-target="#helpModal">Help</button>
-          <button id="recordBtn" class="btn btn-warning">Records</button>
-        </div>
+  <div class="container mt-4 main-container">
+    <!-- Home Screen -->
+    <div id="homeScreen" class="center">
+      <h1>Pong Single Player</h1>
+      <div class="form-group">
+        <label for="playerName">Enter your name:</label>
+        <input type="text" id="playerName" class="form-control" placeholder="Name">
       </div>
-
-      <!-- Game Canvas (initially hidden) -->
-      <canvas id="gameCanvas" class="hidden"></canvas>
-
-      <!-- Game Info (initially hidden) -->
-      <div id="gameInfo" class="center game-info hidden">
-        <h4>Stage: <span id="stageDisplay">1</span></h4>
+      <div class="mb-3">
+        <button id="startBtn" class="btn btn-success">Start Game</button>
+        <!-- These buttons use Bootstrap modals -->
+        <button id="helpBtn" class="btn btn-info" data-toggle="modal" data-target="#helpModal">Help</button>
+        <button id="recordBtn" class="btn btn-warning">Records</button>
       </div>
     </div>
+    
+    <!-- Game Canvas Container (initially hidden) -->
+    <div class="canvas-container">
+      <canvas id="gameCanvas" class="hidden"></canvas>
+    </div>
+    
+    <!-- Game Info (initially hidden) -->
+    <div id="gameInfo" class="center game-info hidden">
+      <h4>Stage: <span id="stageDisplay">1</span></h4>
+    </div>
   </div>
-
+  
   <!-- Footer -->
   <footer>
     <p>By Bocaletto Luca</p>
   </footer>
-
+  
   <!-- Help Modal -->
-  <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+  <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content bg-dark text-white">
         <div class="modal-header">
@@ -130,9 +65,9 @@
       </div>
     </div>
   </div>
-
+  
   <!-- Record Modal -->
-  <div class="modal fade" id="recordModal" tabindex="-1" role="dialog" aria-labelledby="recordModalLabel" aria-hidden="true">
+  <div class="modal fade" id="recordModal" tabindex="-1" aria-labelledby="recordModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content bg-dark text-white">
         <div class="modal-header">
@@ -143,7 +78,7 @@
         </div>
         <div class="modal-body">
           <ul id="recordList" class="list-group">
-            <!-- Records will be added dynamically here -->
+            <!-- Records will be added dynamically -->
           </ul>
         </div>
         <div class="modal-footer">
@@ -152,12 +87,12 @@
       </div>
     </div>
   </div>
-
+  
   <!-- Bootstrap and dependencies -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Scripts -->
+  
+  <!-- Custom Scripts -->
   <script src="bot.js"></script>
   <script src="main.js"></script>
 </body>
