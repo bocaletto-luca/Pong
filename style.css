@@ -19,6 +19,11 @@ body, html {
   padding: 20px;
 }
 
+label[for="playerName"] {
+  max-width: 400px;
+  display: inline-block; /* o block, dipende dal layout */
+}
+
 /* Contenitore per il canvas con rapporto di aspetto (es. 4:3 → padding-bottom: 75%) */
 .canvas-container {
   position: relative;
