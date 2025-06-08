@@ -242,6 +242,35 @@ function resetGame() {
   homeScreen.style.display = "block";
 }
 
+// Ridimensiona l'area di gioco
+function resizeCanvas() {
+  const container = document.querySelector('.container');
+  const dpr = window.devicePixelRatio || 1;
+
+  // Impostiamo la larghezza visuale pari al 98% della larghezza del container.
+  const visualWidth = container.clientWidth * 0.98;
+  const visualHeight = 400; // Puoi renderla dinamica se preferisci
+
+  // Applica le dimensioni in CSS
+  canvas.style.width = visualWidth + 'px';
+  canvas.style.height = visualHeight + 'px';
+
+  // Imposta le dimensioni interne del canvas, moltiplicando per il devicePixelRatio
+  canvas.width = visualWidth * dpr;
+  canvas.height = visualHeight * dpr;
+
+  // Resetta la trasformazione e scala il contesto, per evitare accumuli multipli
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(dpr, dpr);
+
+  // Se necessario, riallinea gli oggetti del gioco in base alla nuova larghezza
+  // Per esempio, puoi posizionare la pallina e le racchette al centro:
+  ball.x = visualWidth / 2;
+  ball.y = visualHeight / 2;
+  player.y = visualHeight / 2 - player.height / 2;
+  bot.y = visualHeight / 2 - bot.height / 2;
+}
+
 // Inizio della partita: controlla che il nome sia inserito, nasconde la schermata iniziale e avvia il ciclo di update
 function startGame() {
   playerName = playerNameInput.value.trim();
