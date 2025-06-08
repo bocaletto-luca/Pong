@@ -1,3 +1,4 @@
+/* Reset and base settings */
 * {
   box-sizing: border-box;
 }
@@ -6,19 +7,21 @@ html, body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  overflow-x: hidden;
   background-color: #222;
   color: white;
   font-family: sans-serif;
 }
 
-/* Struttura flex per fare in modo che il footer rimanga in fondo */
+/* Use flex layout in the body to have the main content centered and the footer always at the bottom */
 body {
   display: flex;
   flex-direction: column;
 }
 
+/* Main container which will expand to fill available space */
 .main-container {
-  flex: 1; /* Occupa tutto lo spazio disponibile per spingere il footer in basso */
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,24 +29,24 @@ body {
   padding: 20px;
 }
 
-/* Limitazione della larghezza del label */
+/* Limit the width of the label for player name */
 label[for="playerName"] {
   max-width: 400px;
   display: inline-block;
 }
 
-/* Contenitore per il canvas con rapporto d’aspetto fisso (es. 4:3 → padding-bottom: 75%) */
+/* Canvas container: maintains a fixed aspect ratio using a padding-bottom trick */
 .canvas-container {
   position: relative;
   width: 98%;
   max-width: 800px;
-  margin: 20px auto; /* Spazio verticale per separarlo dagli altri elementi */
+  margin: 20px auto;  /* Separates the canvas container from other elements */
 }
 
 .canvas-container::before {
   content: "";
   display: block;
-  padding-bottom: 75%;  /* Cambia questo valore per modificare il rapporto d’aspetto */
+  padding-bottom: 75%;  /* For a 4:3 aspect ratio; modify as necessary */
 }
 
 #gameCanvas {
@@ -56,7 +59,7 @@ label[for="playerName"] {
   border: 2px solid white;
 }
 
-/* Altri stili */
+/* Utility classes */
 .hidden {
   display: none;
 }
@@ -69,7 +72,7 @@ label[for="playerName"] {
   margin-bottom: 20px;
 }
 
-/* Footer fisso in fondo, sempre centrato */
+/* Footer styling: always at the bottom and full width */
 footer {
   text-align: center;
   padding: 10px 0;
